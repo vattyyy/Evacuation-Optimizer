@@ -1,0 +1,5 @@
+{
+  "name": "Evacuation Optimizer",
+  "description": "Landing page for an evacuation route optimization tool.",
+  "requestFramePermissions": ["geolocation"]
+}
