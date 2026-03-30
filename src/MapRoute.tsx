@@ -174,9 +174,11 @@ export default function MapRoute() {
           });
 
           const text = response.text || "";
-          const nameMatch = text.match(/DEST_NAME:\s*([^\n]+)/);
-          const latMatch = text.match(/DEST_LAT:\s*([-\d.]+)/);
-          const lonMatch = text.match(/DEST_LON:\s*([-\d.]+)/);
+          console.log("Gemini Map Response:", text);
+          const cleanText = text.replace(/\*/g, '');
+          const nameMatch = cleanText.match(/DEST_NAME:\s*([^\n]+)/);
+          const latMatch = cleanText.match(/DEST_LAT:\s*([-\d.]+)/);
+          const lonMatch = cleanText.match(/DEST_LON:\s*([-\d.]+)/);
 
           if (nameMatch && latMatch && lonMatch) {
             destName = nameMatch[1].trim();
@@ -186,7 +188,7 @@ export default function MapRoute() {
             throw new Error("Failed to parse Gemini response: " + text);
           }
 
-          const nearbyMatches = [...text.matchAll(/NEARBY:\s*([^|]+)\|\s*([-\d.]+)\s*\|\s*([-\d.]+)/g)];
+          const nearbyMatches = [...cleanText.matchAll(/NEARBY:\s*([^|]+)\|\s*([-\d.]+)\s*\|\s*([-\d.]+)/g)];
           const parsedNearby = nearbyMatches.map(m => ({
             name: m[1].trim(),
             lat: parseFloat(m[2]),
